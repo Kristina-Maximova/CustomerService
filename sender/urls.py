@@ -7,6 +7,6 @@ from . import views
 app_name = SenderConfig.name
 
 urlpatterns = [
-    path('', views.LetterListView.as_view(), name = 'home'),
+
 
 ]
