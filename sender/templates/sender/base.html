@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block page_title %}Sender{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+    {% include 'sender/includes/inc_style.html' %}
+
+</head>
+<body>
+
+<div class="row">
+    <!-- Боковой блок -->
+    <div class="col 2">
+        {% include 'sender/includes/inc_svg.html' %}
+        <main class="d-flex flex-nowrap">
+            <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; height: 100vh;">
+                <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <svg class="bi pe-none me-2" width="40" height="32">
+                        <use xlink:href="#bootstrap"/>
+                    </svg>
+                    <span class="fs-4">Почтовый сервис</span>
+                </a>
+                <hr>
+                {% include 'sender/includes/main_menu.html' %}
+                <hr>
+                {% include 'sender/includes/user_menu.html' %}
+
+            </div>
+        </main>
+    </div>
+    <!-- Основной блок -->
+    <div class="col-lg-9">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</div>
+
+<!-- Подключение Bootstrap JS -->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

@@ -76,7 +76,7 @@ class SendTry(models.Model):
         (FAILURE, 'Не успешно')
     ]
 
-    try_at = models.DateTimeField(null=True, blank=True)
+    try_at = models.DateTimeField(null=True, blank=True, verbose_name='дата и время попытки')
     status = models.CharField(max_length=10,
                               choices=STATUS_CHOICES,
                               verbose_name='статус попытки',
