@@ -1,0 +1,27 @@
+{% extends 'sender/base.html' %}
+
+{% block page_title %}Получатель-удаление{% endblock %}
+
+{% block content %}
+<div class='container'>
+    <div class="row">
+        <div class="col-5">
+            <div class="card w-45 mt-5 mb-3" style="width: 20rem; background-color: rgba(0,0,0,0.2);">
+                <div class="card-body">
+                    <h3 class="mb-4">Адресат :</h3>
+                    <p>Почта: {{ addressee.email }}</p>
+                    <p>Ф.И.О.: {{ addressee.full_name }}</p>
+                    <p class="fw-bolder">Вы действительно хотите удалить адресата "{{ addressee.email }}"?</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                        <a href="{% url 'sender:addressees_list' %}">Отмена</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

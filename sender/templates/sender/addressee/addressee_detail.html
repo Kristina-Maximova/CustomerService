@@ -1,6 +1,6 @@
 {% extends 'sender/base.html' %}
 
-{% block page_title %}Получатели-детали{% endblock %}
+{% block page_title %}Получатель подробно{% endblock %}
 
 {% block content %}
 <div class='container'>
@@ -8,12 +8,12 @@
         <div class="col-5">
             <div class="card w-45 mt-5 mb-3" style="width: 20rem; background-color: rgba(0,0,0,0.2);">
                 <div class="card-body">
-                    <h1 class="mb-4">Адресат :</h1>
+                    <h3 class="mb-4">Адресат :</h3>
                     <p>Почта: {{ addressee.email }}</p>
                     <p>Ф.И.О.: {{ addressee.full_name }}</p>
                     <p>Создано: {{ addressee.created_at }}</p>
                     <p>Обновлено: {{ addressee.updated_at }}</p>
-
+                    <a href="{% url 'sender:addressees_list' %}" class="btn btn-secondary">Назад к списку</a>
                     <a href="{% url 'sender:addressee_update' addressee.pk %}" class="btn btn-secondary">Редактировать</a>
                     <a href="{% url 'sender:addressee_delete' addressee.pk %}" class="btn btn-danger">Удалить</a>
                 </div>
