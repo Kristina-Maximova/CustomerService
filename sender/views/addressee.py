@@ -4,19 +4,20 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 
 from ..models import Addressee
+from ..forms import AddresseeForm
 
 
 class AddresseeCreateView(CreateView):
     """ Отображение получателя почты"""
     model = Addressee
-    fields = ['email', 'full_name', 'comment']
+    form_class = AddresseeForm
     template_name = 'sender/addressee/addressee_form.html'
     success_url = reverse_lazy('sender:addressees_list')
 
 
 class AddresseeUpdateView(UpdateView):
     model = Addressee
-    fields = ['email', 'full_name', 'comment']
+    form_class = AddresseeForm
     template_name = 'sender/addressee/addressee_form.html'
     success_url = reverse_lazy('sender:addressees_list')
 

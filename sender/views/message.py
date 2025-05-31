@@ -4,12 +4,17 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 
 from ..models import Message
+from ..forms import MessageForm
 
 class MessageCreateView(CreateView):
     model = Message
-    fields = ['subject', 'text']
+    form_class = MessageForm
+    # fields = ['subject', 'text']
     template_name = 'sender/message/message_form.html'
     success_url = reverse_lazy('sender:messages_list')
+
+
+
 
 class MessageListView(ListView):
     model = Message
@@ -23,7 +28,8 @@ class MessageDetailView(DetailView):
 
 class MessageUpdateView(UpdateView):
     model = Message
-    fields = ['subject', 'text']
+    form_class = MessageForm
+    # fields = ['subject', 'text']
     template_name = 'sender/message/message_form.html'
     success_url = reverse_lazy('sender:messages_list')
 

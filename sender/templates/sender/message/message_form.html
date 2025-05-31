@@ -14,6 +14,7 @@
                 <!--Форма для обработки POST-запроса-->
                 <form method="post" enctype="multipart/form-data" action="" class="form-container">
                     {% csrf_token %}
+                    {{ form.non_field_errors }}
                     {{ form.as_p }}
                     <button type="submit" class="btn btn-success">Сохранить</button>
                     <a href="{% url 'sender:messages_list' %}" class="btn btn-primary">Отменить</a>

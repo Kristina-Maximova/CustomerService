@@ -12,7 +12,7 @@ class Addressee(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'адресат: {self.full_name}'
+        return f'{self.email}'
 
     class Meta:
         verbose_name = 'получатель'
@@ -29,7 +29,7 @@ class Message(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'сообщение {self.pk}'
+        return f'{self.pk}: {self.text[:50]}...' if len(self.text) > 50 else f'{self.pk}: {self.text}'
 
     class Meta:
         verbose_name = 'сообщение'
@@ -60,7 +60,7 @@ class Mailing(models.Model):
     message = models.ForeignKey(Message, null=True, blank=True,
                                 on_delete=models.SET_NULL,
                                 verbose_name='сообщение')
-    addressees = models.ManyToManyField(Addressee, null=True, blank=True,)
+    addressees = models.ManyToManyField(Addressee, blank=True, verbose_name='Адресаты:')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

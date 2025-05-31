@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'sender/base.html' %}
 
-</body>
-</html>
+{% block page_title %}Рассылка-удаление{% endblock %}
+
+{% block content %}
+<div class='container'>
+    <div class="row">
+        <div class="col-5">
+            <div class="card w-45 mt-5 mb-3" style="width: 20rem; background-color: rgba(0,0,0,0.2);">
+                <div class="card-body">
+                    <h3 class="mb-4">Рассылка :</h3>
+                    <p>{{ mailing.message }}</p>
+                    <P>{{ mailing.addressees }}</P>
+                    <p class="fw-bolder">Вы действительно хотите удалить эту рассылку</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                        <a href="{% url 'sender:mailings_list' %}">Отмена</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -11,8 +11,8 @@
                     <h3 class="mb-4">Сообщение :</h3>
                     <p>Тема: {{ message.subject }}</p>
                     <p>Текст: {{ message.text }}</p>
-                    <p>Создано: {{ message.created_at }}</p>
-                    <p>Обновлено: {{ message.updated_at }}</p>
+                    <p>Создано: {{ message.created_at|date:"d.m.Y H:i" }}</p>
+                    <p>Обновлено: {{ message.updated_at|date:"d.m.Y H:i" }}</p>
                     <a href="{% url 'sender:messages_list' %}" class="btn btn-secondary">Назад к списку</a>
                     <a href="{% url 'sender:message_update' message.pk %}" class="btn btn-secondary">Редактировать</a>
                     <a href="{% url 'sender:message_delete' message.pk %}" class="btn btn-danger">Удалить</a>
