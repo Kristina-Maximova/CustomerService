@@ -1,0 +1,26 @@
+{% extends 'sender/base.html' %}
+
+{% block page_title %}Детали рассылки{% endblock %}
+
+{% block content %}
+<div class='container'>
+    <div class="row">
+        <div class="col-6">
+            <div class="card w-45 mt-5 mb-3" style="width: 40rem; background-color: rgba(0,0,0,0.2);">
+                <div class="card-body">
+                    <h3 class="mb-4">Рассылка :</h3>
+                    <p>{{ mailing.start_at }}</p>
+                    <p>{{ mailing.completed_at}}</p>
+                    <p>{{ mailing.status }}</p>
+                    <p>{{ mailing.message }}</p>
+                    <P>{{ mailing.addressees }}</P>
+                    <a href="{% url 'sender:mailings_list' %}" class="btn btn-secondary">Назад к списку</a>
+                    <a href="{% url 'sender:mailing_update' mailing.pk %}" class="btn btn-secondary">Редактировать</a>
+                    <a href="{% url 'sender:mailing_delete' mailing.pk %}" class="btn btn-danger">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

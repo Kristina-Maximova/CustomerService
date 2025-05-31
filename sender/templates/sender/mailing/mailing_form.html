@@ -1,0 +1,27 @@
+{% extends 'sender/base.html' %}
+
+{% block page_title %}Рассылка{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <p class="fs-3">Управление почтовыми рассылками</p>
+</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="card m-3" style="width: 40rem; background-color: success-subtle;">
+            <div class="card-body">
+                <h4 style="margin-top: 10px; text-align: center ">Рассылка :</h4>
+                <!--Форма для обработки POST-запроса-->
+                <form method="post" enctype="multipart/form-data" action="" class="form-container">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                    <a href="{% url 'sender:mailings_list' %}" class="btn btn-primary">Отменить</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

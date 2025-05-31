@@ -22,6 +22,7 @@ class Addressee(models.Model):
 
 class Message(models.Model):
     """ Класс для представления сообщения"""
+
     subject = models.CharField(max_length=250, verbose_name='тема сообщения', null=True, blank=True)
     text = models.TextField(verbose_name='текст сообщения')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -37,6 +38,10 @@ class Message(models.Model):
 
 class Mailing(models.Model):
     """ Класс для модели рассылки сообщений """
+
+
+    number_of_mailing = 0  # переменная-счетчик на уровне класса
+
     CREATED = 'created'
     STARTED = 'started'
     COMPLETED = 'completed'

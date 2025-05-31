@@ -1,0 +1,24 @@
+{% extends 'sender/base.html' %}
+
+{% block page_title %}Рассылки{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <h1 class="mb-4">Список рассылок</h1>
+    <a href="{% url 'sender:mailing_create' %}" class="btn btn-primary">Добавить рассылку</a>
+    <ul class="list-group">
+        {% for mailing in mailings %}
+        <li class="list-group-item">
+            <p>{{ mailing.start_at }}</p>
+            <p>{{ mailing.message }}</p>
+            <P>{{ mailing.addressees }}</P>
+        </li>
+        <li class="list-group-item">
+            <a href="{% url 'sender:mailing_detail' mailing.pk %}" class="btn btn-secondary">Подробно</a>
+            <a href="{% url 'sender:mailing_update' mailing.pk %}" class="btn btn-secondary">Изменить</a>
+            <a href="{% url 'sender:mailing_delete' mailing.pk %}" class="btn btn-danger">Удалить</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
