@@ -35,16 +35,16 @@ class MailingForm(forms.ModelForm):
 
     class Meta:
         model = Mailing
-        fields = ['start_at', 'completed_at', 'status', 'message', 'addressees']
+        fields = ['message', 'addressees']
         widgets = {
             'addressees': forms.CheckboxSelectMultiple(),
         }
 
     def __init__(self, *args, **kwargs):
         super(MailingForm, self).__init__(*args, **kwargs)
-        self.fields['start_at'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Время начала'})
-        self.fields['completed_at'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Время завершения'})
-        self.fields['status'].widget.attrs.update({'class': 'form-control', 'placeholder': 'статус'})
+        # self.fields['start_at'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Время начала'})
+        # self.fields['completed_at'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Время завершения'})
+        # self.fields['status'].widget.attrs.update({'class': 'form-control', 'placeholder': 'статус'})
         self.fields['message'].widget.attrs.update({'class': 'form-control', 'placeholder': 'сообщение'})
 
 
@@ -63,4 +63,4 @@ class SendTry(forms.ModelForm):
 
     class Meta:
         model = SendTry
-        fields = ['try_at', 'status', 'response', 'mailing']
+        fields = ['mailing']

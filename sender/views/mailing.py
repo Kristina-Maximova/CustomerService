@@ -38,3 +38,6 @@ class MailingDeleteView(DeleteView):
     model = Mailing
     template_name = 'sender/mailing/mailing_confirm_delete.html'
     success_url = reverse_lazy('sender:mailings_list')
+
+
+

@@ -141,3 +141,13 @@ EMAIL_HOST_PASSWORD = os.getenv(
     'EMAIL_HOST_PASSWORD')  # 'app_password' associated with above email-id (not the regular password)
 DEFAULT_FROM_EMAIL = 'maximovaki@gmail.com'
 DEFAULT_TO_EMAIL = 'Your email'
+
+CACHE_ENABLED = True if os.getenv('CACHE_ENABLED') == "True" else False
+
+# настройка для кэширования с redis
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': os.getenv('REDIS_HOST'),
+    }
+}

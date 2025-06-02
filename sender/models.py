@@ -1,4 +1,3 @@
-from random import choices
 
 from django.db import models
 
@@ -9,7 +8,7 @@ class Addressee(models.Model):
     full_name = models.CharField(max_length=150, verbose_name='Ф.И.О.')
     comment = models.TextField(null=True, blank=True, verbose_name='комментарий')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
         return f'{self.email}'
@@ -26,7 +25,7 @@ class Message(models.Model):
     subject = models.CharField(max_length=250, verbose_name='тема сообщения', null=True, blank=True)
     text = models.TextField(verbose_name='текст сообщения')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
         return f'{self.pk}: {self.text[:50]}...' if len(self.text) > 50 else f'{self.pk}: {self.text}'
@@ -50,20 +49,22 @@ class Mailing(models.Model):
         (STARTED, 'запущена'),
         (COMPLETED, 'завершена')
     ]
-    start_at = models.DateTimeField(null=True, blank=True,
+    start_at = models.DateTimeField(null=True, blank=True, editable=False,
                                     verbose_name='время запуска')
-    completed_at = models.DateTimeField(null=True, blank=True,
+    completed_at = models.DateTimeField(null=True, blank=True, editable=False,
                                         verbose_name='время завершения')
     status = models.CharField(max_length=18,
                               choices=STATUS_CHOICES,
-                              verbose_name='статус')
+                              verbose_name='статус',
+                              default=CREATED,
+                              editable=False,)
     message = models.ForeignKey(Message, null=True, blank=True,
                                 on_delete=models.SET_NULL,
                                 verbose_name='сообщение')
     addressees = models.ManyToManyField(Addressee, blank=True, verbose_name='Адресаты:')
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
         return f'рассылка {self.pk}'
@@ -81,17 +82,21 @@ class SendTry(models.Model):
         (FAILURE, 'Не успешно')
     ]
 
-    try_at = models.DateTimeField(null=True, blank=True, verbose_name='дата и время попытки')
+    try_at = models.DateTimeField(null=True, blank=True, editable=False,
+                                  verbose_name='дата и время попытки')
     status = models.CharField(max_length=10,
                               choices=STATUS_CHOICES,
                               verbose_name='статус попытки',
-                              null=True, blank=True)
-    response = models.TextField(null=True, blank=True, verbose_name='ответ сервера')
+                              null=True, blank=True,
+                              editable=False,
+                              )
+    response = models.TextField(null=True, blank=True, editable=False,
+                                verbose_name='ответ сервера')
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE,
                                 verbose_name='рассылка',
                                 null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
 
     def __str__(self):

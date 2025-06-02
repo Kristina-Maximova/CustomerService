@@ -8,12 +8,12 @@ from .views.message import (MessageCreateView, MessageListView, MessageUpdateVie
                             MessageDetailView, MessageDeleteView)
 from .views.mailing import (MailingListView, MailingCreateView, MailingDetailView,
                             MailingUpdateView, MailingDeleteView)
-from .views.home import home_view
+from .views.home import HomeView
 
 app_name = SenderConfig.name  # 'sender'
 
 urlpatterns = [
-    path('', home_view, name='home'),
+    path('', HomeView.as_view(), name='home'),
 
     path('addressee/list/', AddresseeListView.as_view(), name='addressees_list'),
     path('addressee/new/', AddresseeCreateView.as_view(), name='addressee_create'),
