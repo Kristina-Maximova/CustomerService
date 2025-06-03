@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
 from pathlib import Path
+
+from django.conf.global_settings import LOGOUT_REDIRECT_URL
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
@@ -38,7 +40,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    "phonenumber_field",
     "sender",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -151,3 +156,8 @@ CACHES = {
         'LOCATION': os.getenv('REDIS_HOST'),
     }
 }
+
+LOGIN_REDIRECT_URL = 'sender:home'  # куда перенаправлять после успешного входа с паролем
+LOGOUT_REDIRECT_URL ='/'
+# LOGIN_URL = 'users:login'
+AUTH_USER_MODEL = 'users.MailUser'

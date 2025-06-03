@@ -1,6 +1,6 @@
 from django.core.cache import cache
 from django.core.mail import send_mail
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 import smtplib
@@ -13,7 +13,7 @@ class MailingService:
 
     @staticmethod
     def send_mailing(request, pk):
-        mailing = Mailing.objects.get(pk=pk)
+        mailing = get_object_or_404(Mailing, id=pk)
         subject = mailing.message.subject
         message = mailing.message.text
         addressees = [addressee.email for addressee in mailing.addressees.all()]

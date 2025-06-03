@@ -7,7 +7,7 @@ from ...models import Mailing, SendTry
 
 
 class Command(BaseCommand):
-    help = "Рассылка почты"
+    help = "Отправка всех рассылок"
 
     def handle(self, *args, **kwargs):
         mailings = Mailing.objects.filter(status__in=[Mailing.CREATED, Mailing.STARTED])
