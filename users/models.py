@@ -20,6 +20,8 @@ class MailUser(AbstractUser):
     country = models.CharField(max_length=25, verbose_name='Страна',
                                help_text='Ваша страна',
                                blank=True, null=True)
+    token = models.CharField(max_length=100, verbose_name='Токен',
+                             blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

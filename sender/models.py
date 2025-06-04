@@ -1,4 +1,5 @@
-
+from users.models import MailUser
+from django.contrib.auth import get_user_model
 from django.db import models
 
 
@@ -9,6 +10,8 @@ class Addressee(models.Model):
     comment = models.TextField(null=True, blank=True, verbose_name='комментарий')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    owner = models.ForeignKey(MailUser, verbose_name="Владелец", null=True,
+                              blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.email}'
@@ -26,6 +29,8 @@ class Message(models.Model):
     text = models.TextField(verbose_name='текст сообщения')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    owner = models.ForeignKey(MailUser, verbose_name="Владелец", null=True,
+                              blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.pk}: {self.text[:50]}...' if len(self.text) > 50 else f'{self.pk}: {self.text}'
@@ -37,7 +42,6 @@ class Message(models.Model):
 
 class Mailing(models.Model):
     """ Класс для модели рассылки сообщений """
-
 
     number_of_mailing = 0  # переменная-счетчик на уровне класса
 
@@ -57,7 +61,7 @@ class Mailing(models.Model):
                               choices=STATUS_CHOICES,
                               verbose_name='статус',
                               default=CREATED,
-                              editable=False,)
+                              editable=False, )
     message = models.ForeignKey(Message, null=True, blank=True,
                                 on_delete=models.SET_NULL,
                                 verbose_name='сообщение')
@@ -65,6 +69,8 @@ class Mailing(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    owner = models.ForeignKey(MailUser, verbose_name="Владелец", null=True,
+                              blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'рассылка {self.pk}'
@@ -73,11 +79,12 @@ class Mailing(models.Model):
         verbose_name = 'рассылка'
         verbose_name_plural = 'рассылки'
 
+
 class SendTry(models.Model):
     """ Класс для попытки рассылки сообщений"""
     SUCCESS = 'success'
     FAILURE = 'failure'
-    STATUS_CHOICES=[
+    STATUS_CHOICES = [
         (SUCCESS, 'Успешно'),
         (FAILURE, 'Не успешно')
     ]
@@ -97,12 +104,15 @@ class SendTry(models.Model):
                                 null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
-
+    owner = models.ForeignKey(get_user_model(),
+                              verbose_name='Владелец',
+                              null=True, blank=True,
+                              on_delete=models.SET_NULL,
+                              )
 
     def __str__(self):
         return f"попытка рассылки {self.pk}"
 
     class Meta:
-        verbose_name='попытка отправки'
-        verbose_name_plural='попытки отправки'
-
+        verbose_name = 'попытка отправки'
+        verbose_name_plural = 'попытки отправки'

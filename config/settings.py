@@ -144,8 +144,10 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')  # sender's email-id
 EMAIL_HOST_PASSWORD = os.getenv(
     'EMAIL_HOST_PASSWORD')  # 'app_password' associated with above email-id (not the regular password)
-DEFAULT_FROM_EMAIL = 'maximovaki@gmail.com'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 DEFAULT_TO_EMAIL = 'Your email'
+SERVER_EMAIL = EMAIL_HOST_USER
+
 
 CACHE_ENABLED = True if os.getenv('CACHE_ENABLED') == "True" else False
 
