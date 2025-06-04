@@ -18,6 +18,9 @@
                     {{ form.as_p }}
                     <button type="submit" class="btn btn-success">Войти</button>
                     <a href="{% url 'sender:home' %}" class="btn btn-secondary">Отменить</a>
+                    <div class="card-footer">
+                        <a href="{% url 'users:password_recovery' %}">Забыли пароль?</a>
+                    </div>
                 </form>
             </div>
         </div>
