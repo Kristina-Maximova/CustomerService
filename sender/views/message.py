@@ -15,11 +15,27 @@ class MessageCreateView(CreateView):
     template_name = 'sender/message/message_form.html'
     success_url = reverse_lazy('sender:messages_list')
 
+    def form_valid(self, form):
+        message = form.save()
+        user = self.request.user
+        message.owner = user
+        message.save()
+
+        return super().form_valid(form)
+
+
 
 class MessageListView(ListView):
     model = Message
     template_name = 'sender/message/messages_list.html'
     context_object_name = 'messages'
+
+
+    def get_queryset(self):
+        if self.request.user.groups.filter(name='manager').exists() or self.request.user.is_superuser:
+            return super().get_queryset()
+        else:
+            return super().get_queryset().filter(owner=self.request.user)
 
 
 class MessageDetailView(DetailView):

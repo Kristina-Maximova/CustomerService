@@ -110,8 +110,11 @@ class SendTry(models.Model):
                               on_delete=models.SET_NULL,
                               )
 
+    # def __str__(self):
+    #     return f"попытка рассылки {self.pk}"
+
     def __str__(self):
-        return f"попытка рассылки {self.pk}"
+        return f"отправка в {self.try_at} <{self.status}>"
 
     class Meta:
         verbose_name = 'попытка отправки'

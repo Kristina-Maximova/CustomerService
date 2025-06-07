@@ -55,20 +55,20 @@ class MailingService:
     def update_status(mailing, start_at, completed_at):
         mailing.start_at = timezone.localtime(start_at)
         mailing.completed_at = timezone.localtime(completed_at)
-        mailing.status = "completed"
+        mailing.status = "started"
         mailing.save()
 
-    @staticmethod
-    def caching(queryset, model, user=None):
-        if not CACHE_ENABLED:
-            return queryset.filter(owner=user)
-        key = str(model) + "_list"
-        objects = cache.get(key)
-        if objects is not None:
-            return objects
-        objects = queryset.filter(owner=user)
-        cache.set(key, objects, 60 * 1)
-        return objects
+    # @staticmethod
+    # def caching(queryset, model, user=None):
+    #     if not CACHE_ENABLED:
+    #         return queryset.filter(owner=user)
+    #     key = str(model) + "_list"
+    #     objects = cache.get(key)
+    #     if objects is not None:
+    #         return objects
+    #     objects = queryset.filter(owner=user)
+    #     cache.set(key, objects, 60 * 1)
+    #     return objects
 
 
 

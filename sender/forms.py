@@ -40,22 +40,19 @@ class MailingForm(forms.ModelForm):
             'addressees': forms.CheckboxSelectMultiple(),
         }
 
+    # def __init__(self, *args, **kwargs):
+    #     super(MailingForm, self).__init__(*args, **kwargs)
+    #     self.fields['message'].widget.attrs.update({'class': 'form-control', 'placeholder': 'сообщение'})
+
     def __init__(self, *args, **kwargs):
+        # Извлекаем текущего пользователя из kwargs
+        self.user = kwargs.pop('user')
         super(MailingForm, self).__init__(*args, **kwargs)
-        # self.fields['start_at'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Время начала'})
-        # self.fields['completed_at'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Время завершения'})
-        # self.fields['status'].widget.attrs.update({'class': 'form-control', 'placeholder': 'статус'})
+        # Фильтруем сообщения по текущему пользователю
+        self.fields['message'].queryset = Message.objects.filter(owner=self.user)
+        # Фильтруем адресатов по текущему пользователю
+        self.fields['addressees'].queryset = Addressee.objects.filter(owner=self.user)
         self.fields['message'].widget.attrs.update({'class': 'form-control', 'placeholder': 'сообщение'})
-
-
-
-# class MailingForm(forms.Form):
-#     """ Форма для рассылки """
-#     start_at = forms.DateTimeField(required=False, label='Время начала: ')
-#     completed_at = forms.DateTimeField(required=False, label='Время окончания: ')
-#     status = forms.ChoiceField(required=False,  label='Статус' )
-#     message = forms.ChoiceField(label='Сообщение')
-#     addressees = forms.ChoiceField()
 
 
 class SendTry(forms.ModelForm):
