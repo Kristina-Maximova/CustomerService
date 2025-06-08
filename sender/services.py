@@ -17,6 +17,7 @@ class MailingService:
         subject = mailing.message.subject
         message = mailing.message.text
         addressees = [addressee.email for addressee in mailing.addressees.all()]
+        user = mailing.owner
 
         start_at = timezone.now()
 
@@ -31,7 +32,7 @@ class MailingService:
         else:
             completed_at = timezone.now()
             MailingService.try_to_send(
-                status="success", response=response, mailing=mailing
+                status="success", response=response, mailing=mailing, user=user
             )
             MailingService.update_status(
                 mailing=mailing,
@@ -41,13 +42,20 @@ class MailingService:
         finally:
             return redirect(reverse("sender:mailings_list"))
 
+
+
+
+
+
+
     @staticmethod
-    def try_to_send(status, response, mailing):
+    def try_to_send(status, response, mailing, user):
         attempt = SendTry.objects.create(
             try_at=timezone.now(),
             status=status,
             response=response,
-            mailing=mailing
+            mailing=mailing,
+            owner=user
         )
         attempt.save()
 

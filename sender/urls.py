@@ -8,6 +8,7 @@ from .views.message import (MessageCreateView, MessageListView, MessageUpdateVie
                             MessageDetailView, MessageDeleteView)
 from .views.mailing import (MailingListView, MailingCreateView, MailingDetailView,
                             MailingUpdateView, MailingDeleteView, SendMailing)
+from .views.sendtry import AttemptsListView, StatisticsView
 from .views.home import HomeView
 
 app_name = SenderConfig.name  # 'sender'
@@ -33,4 +34,7 @@ urlpatterns = [
     path('mailing/update/<int:pk>/', MailingUpdateView.as_view(), name='mailing_update'),
     path('mailing/delete/<int:pk>/', MailingDeleteView.as_view(), name='mailing_delete'),
     path('send-mailing/<int:pk>/', SendMailing.as_view(), name='send_mailing'),
+
+    path('attempts/', AttemptsListView.as_view(), name='attempts' ),
+    path('statistics/', StatisticsView.as_view(), name='statistics' ),
 ]

@@ -55,7 +55,7 @@ class MailingForm(forms.ModelForm):
         self.fields['message'].widget.attrs.update({'class': 'form-control', 'placeholder': 'сообщение'})
 
 
-class SendTry(forms.ModelForm):
+class SendTryForm(forms.ModelForm):
     """ Форма для попытки рассылки """
 
     class Meta:
