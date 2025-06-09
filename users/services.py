@@ -5,11 +5,13 @@ from django.urls import reverse
 
 from .models import MailUser
 
+
 def email_verification(request, token):
     user = get_object_or_404(MailUser, token=token)
     user.is_active = True
     user.save()
     return HttpResponseRedirect(reverse("users:login"))
+
 
 @permission_required("users.view_user")
 def block_user(self, pk):

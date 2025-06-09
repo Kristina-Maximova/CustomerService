@@ -1,12 +1,14 @@
-from django.core.cache import cache
-from django.core.mail import send_mail
-from django.shortcuts import redirect, get_object_or_404
-from django.urls import reverse
-from django.utils import timezone
 import smtplib
 
-from config.settings import  EMAIL_HOST_USER, CACHE_ENABLED
+from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
+from django.utils import timezone
+
+from config.settings import EMAIL_HOST_USER
+
 from .models import Mailing, SendTry
+
 
 class MailingService:
     """ Методы обработки отправки почты """
@@ -42,12 +44,6 @@ class MailingService:
         finally:
             return redirect(reverse("sender:mailings_list"))
 
-
-
-
-
-
-
     @staticmethod
     def try_to_send(status, response, mailing, user):
         attempt = SendTry.objects.create(
@@ -65,18 +61,3 @@ class MailingService:
         mailing.completed_at = timezone.localtime(completed_at)
         mailing.status = "started"
         mailing.save()
-
-    # @staticmethod
-    # def caching(queryset, model, user=None):
-    #     if not CACHE_ENABLED:
-    #         return queryset.filter(owner=user)
-    #     key = str(model) + "_list"
-    #     objects = cache.get(key)
-    #     if objects is not None:
-    #         return objects
-    #     objects = queryset.filter(owner=user)
-    #     cache.set(key, objects, 60 * 1)
-    #     return objects
-
-
-

@@ -15,16 +15,21 @@
         <li><a class="dropdown-item " href="{% url 'users:profile' user.pk %}">Мой профиль</a></li>
 
         <li>
-            <form method="post" action="{% url 'users:logout' %}" style="display:inline">
+            <form method="post" action="{% url 'users:logout'  %}" style="display:inline">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-link nav-link dropdown-item p-3">Выйти</button>
             </form>
             <!-- <a class="dropdown-item" href="#">Выйти</a> -->
         </li>
+        {% if is_manager %}
+            <li><a class="dropdown-item p-3" href="{% url 'users:users' %}">Все пользователи</a></li>
+        {% endif %}
+
         {% else %}
         <li><a class="dropdown-item p-3" href="{% url 'users:login' %}">Войти</a></li>
         <li><a class="dropdown-item p-3" href="{% url 'users:register' %}">Регистрация</a></li>
         {% endif %}
+
 
     </ul>
 </div>

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import BooleanField
 
-from .models import Addressee, Message, Mailing, SendTry
+from .models import Addressee, Mailing, Message, SendTry
 
 
 class StyleFormMixin:

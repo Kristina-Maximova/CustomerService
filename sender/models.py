@@ -1,6 +1,7 @@
-from users.models import MailUser
 from django.contrib.auth import get_user_model
 from django.db import models
+
+from users.models import MailUser
 
 
 class Addressee(models.Model):
@@ -20,6 +21,9 @@ class Addressee(models.Model):
         verbose_name = 'получатель'
         verbose_name_plural = 'получатели'
         ordering = ['full_name']
+        permissions = [
+            ('can_view_all_addressees', 'Can view all addressees'),
+        ]
 
 
 class Message(models.Model):
@@ -38,6 +42,9 @@ class Message(models.Model):
     class Meta:
         verbose_name = 'сообщение'
         verbose_name_plural = 'сообщения'
+        permissions = [
+            ('can_view_all_messages', 'Can view all messages'),
+        ]
 
 
 class Mailing(models.Model):
@@ -78,6 +85,10 @@ class Mailing(models.Model):
     class Meta:
         verbose_name = 'рассылка'
         verbose_name_plural = 'рассылки'
+        permissions = [
+            ('can_view_all_mailings', 'Can view all mailings'),
+            ('can_stop_mailing', 'Can stop mailing'),
+        ]
 
 
 class SendTry(models.Model):

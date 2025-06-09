@@ -1,4 +1,4 @@
 from .addressee import *
-from .message import *
-from .mailing import *
 from .home import *
+from .mailing import *
+from .message import *

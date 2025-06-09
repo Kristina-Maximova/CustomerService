@@ -1,12 +1,12 @@
-from django.core.exceptions import PermissionDenied
-from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from ..models import Addressee
 from ..forms import AddresseeForm
+from ..models import Addressee
 
 
 class AddresseeCreateView(LoginRequiredMixin, CreateView):
@@ -38,7 +38,7 @@ class AddresseeUpdateView(LoginRequiredMixin, UpdateView):
         return obj
 
 
-class AddresseeDetailView(DetailView):
+class AddresseeDetailView(LoginRequiredMixin, DetailView):
     model = Addressee
     template_name = 'sender/addressee/addressee_detail.html'
     context_object_name = 'addressee'
@@ -62,13 +62,24 @@ class AddresseeDeleteView(LoginRequiredMixin, DeleteView):
         return obj
 
 
-class AddresseeListView(ListView):
+class AddresseeListView(LoginRequiredMixin, ListView):
     model = Addressee
     template_name = 'sender/addressee/addressees_list.html'
     context_object_name = 'addressees'
 
     def get_queryset(self):
-        if self.request.user.groups.filter(name='manager').exists() or self.request.user.is_superuser:
-            return super().get_queryset()
+        if self.request.user.groups.filter(name='Managers').exists() or self.request.user.is_superuser:
+            queryset = cache.get('addressee_queryset')
+            if not queryset:
+                queryset = super().get_queryset()
+                cache.set('addressee_queryset', queryset, 60 * 5)
+
+            return queryset
         else:
             return super().get_queryset().filter(owner=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['is_manager'] = self.request.user.groups.filter(name='Managers').exists()
+        return context

@@ -35,7 +35,12 @@
         Рассылки
     </a>
 </li>
+
 <li>
+    {% if is_manager or user.is_superuser %}
+    <a href="{% url 'sender:attempts' %}" class="nav-link text-white">Попытки</a>
+    {% else %}
+
     <a href="{% url 'sender:statistics' %}" class="nav-link text-white">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart"
              viewBox="0 0 16 16">
@@ -43,9 +48,8 @@
         </svg>
         Статистика
     </a>
+    {% endif %}
 </li>
-<li>
-   <a href="{% url 'sender:attempts' %}" class="nav-link text-white">Попытки<a>
-</li>
+
 
 <!-- </ul> -->

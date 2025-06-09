@@ -2,14 +2,25 @@ from django.urls import path
 
 from sender.apps import SenderConfig
 
-from .views.addressee import (AddresseeListView, AddresseeCreateView, AddresseeDetailView,
-                              AddresseeUpdateView, AddresseeDeleteView)
-from .views.message import (MessageCreateView, MessageListView, MessageUpdateView,
-                            MessageDetailView, MessageDeleteView)
-from .views.mailing import (MailingListView, MailingCreateView, MailingDetailView,
-                            MailingUpdateView, MailingDeleteView, SendMailing)
-from .views.sendtry import AttemptsListView, StatisticsView
+from .views.addressee import (
+    AddresseeCreateView,
+    AddresseeDeleteView,
+    AddresseeDetailView,
+    AddresseeListView,
+    AddresseeUpdateView
+)
 from .views.home import HomeView
+from .views.mailing import (
+    MailingCreateView,
+    MailingDeleteView,
+    MailingDetailView,
+    MailingListView,
+    MailingUpdateView,
+    SendMailing,
+    StopMailingView
+)
+from .views.message import MessageCreateView, MessageDeleteView, MessageDetailView, MessageListView, MessageUpdateView
+from .views.sendtry import AttemptsListView, StatisticsView
 
 app_name = SenderConfig.name  # 'sender'
 
@@ -34,7 +45,8 @@ urlpatterns = [
     path('mailing/update/<int:pk>/', MailingUpdateView.as_view(), name='mailing_update'),
     path('mailing/delete/<int:pk>/', MailingDeleteView.as_view(), name='mailing_delete'),
     path('send-mailing/<int:pk>/', SendMailing.as_view(), name='send_mailing'),
+    path('stop_mailing/<int:pk>/', StopMailingView.as_view(), name='stop_mailing'),
 
-    path('attempts/', AttemptsListView.as_view(), name='attempts' ),
-    path('statistics/', StatisticsView.as_view(), name='statistics' ),
+    path('attempts/', AttemptsListView.as_view(), name='attempts'),
+    path('statistics/', StatisticsView.as_view(), name='statistics'),
 ]

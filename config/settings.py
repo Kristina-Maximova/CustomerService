@@ -148,7 +148,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 DEFAULT_TO_EMAIL = 'Your email'
 SERVER_EMAIL = EMAIL_HOST_USER
 
-
 CACHE_ENABLED = True if os.getenv('CACHE_ENABLED') == "True" else False
 
 # настройка для кэширования с redis
@@ -159,7 +158,37 @@ CACHES = {
     }
 }
 
-LOGIN_REDIRECT_URL = 'sender:home'  # куда перенаправлять после успешного входа с паролем
-LOGOUT_REDIRECT_URL ='/'
-# LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'sender:home'  # куда  после успешного входа с паролем
+LOGOUT_REDIRECT_URL = 'sender:home'
+LOGIN_URL = 'users:login'
 AUTH_USER_MODEL = 'users.MailUser'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'my_format': {
+            'format': '{asctime} - {levelname} - {module} - {filename} - {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'my_format',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'formatter': 'my_format',
+            'filename': 'sender.log',
+            'encoding': 'utf-8',
+        },
+    },
+    'loggers': {
+        'my_logger': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

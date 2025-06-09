@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Addressee, Message, Mailing, SendTry
+
+from .models import Addressee, Mailing, Message, SendTry
+
 
 # Register your models here.
 @admin.register(Addressee)
@@ -15,7 +17,7 @@ class MessageAdmin(admin.ModelAdmin):
     """ Администрирование почтового сообщения"""
     list_display = ('subject', 'text',)
     list_filter = ('subject',)
-    search_fields = ('subject', 'text', )
+    search_fields = ('subject', 'text',)
 
 
 @admin.register(Mailing)
@@ -32,4 +34,3 @@ class SendTryAdmin(admin.ModelAdmin):
     list_display = ('try_at', 'status', 'response', 'mailing')
     list_filter = ('status', 'try_at',)
     search_fields = ('status',)
-

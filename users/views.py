@@ -1,19 +1,19 @@
 import secrets
 
-from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, get_object_or_404, redirect
+# from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
+from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
-from django.urls import reverse_lazy, reverse
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import DetailView, FormView, ListView, TemplateView
+from django.http import HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView, FormView, ListView, TemplateView, View
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
 
-from .forms import MailUserCreationForm, MailUserChangeForm, UserLoginForm, UserForm, PasswordRecoveryForm
+from .forms import MailUserChangeForm, MailUserCreationForm, PasswordRecoveryForm, UserLoginForm
 from .models import MailUser
-from .services import email_verification, block_user
 
 
 # Create your views here.
@@ -21,6 +21,7 @@ class UserCreateView(CreateView):
     """ Представление для создания нового пользователя"""
     model = MailUser
     form_class = MailUserCreationForm
+
     success_url = reverse_lazy("users:email_confirmation")
 
     def form_valid(self, form):
@@ -53,7 +54,13 @@ class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = "users/user_list.html"
 
     def test_func(self):
-        return self.request.user.groups.filter(name="Менеджеры").exists() or self.request.user.is_superuser
+        return self.request.user.groups.filter(name="Managers").exists() or self.request.user.is_superuser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['is_manager'] = self.request.user.groups.filter(name='Managers').exists()
+        return context
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -143,43 +150,16 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user
 
 
-# class RegisterView(CreateView):
-#     """ Представление для регистрации нового пользователя """
-#     template_name = 'users/register.html'
-#     form_class = MailUserCreationForm
-#     success_url = reverse_lazy('sender:home')
-#
-#     def form_valid(self, form):
-#         user = form.save()
-#         user.is_active = False
-#         token = secrets.token_hex(16)
-#         user.token = token
-#         user.save()
-#         host = self.request.get_host()
-#         url = f'http://{host}/users/email-confirm/{token}/'
-#         send_mail(
-#             subject='Подтверждение почты',
-#             message=f'''Для регистрации на сайте почтовых рассылок перейдите, пожалуйста, по ссылке:
-#             {url}''',
-#             from_email=EMAIL_HOST_USER,
-#             recipient_list=[user.email],
-#             fail_silently=False,
-#         )
-#         return super().form_valid(form)
-#
-# def email_verification(request, token):
-#     user = get_object_or_404(MailUser, token=token)
-#     user.is_active = True
-#     user.save()
-#     return redirect(reverse('users:login'))
-#
-#
-class ProfileUpdateView(LoginRequiredMixin, UpdateView):
-    """ Представление для редактирования профиля пользователя """
-    model = MailUser
-    form_class = MailUserChangeForm
-    template_name = 'users/profile_update.html'
-    success_url = reverse_lazy('sender:home')
+class BlockUserView(View):
+    def post(self, request, pk):
+        block_user = MailUser.objects.get(pk=pk)
+        if not request.user.has_perm("users.can_block_users"):
+            raise PermissionDenied("У вас нет прав блокировать пользователя")
 
-    def get_objects(self, queryset=None):
-        return self.request.user
+        # Проверка, чтобы пользователь не мог заблокировать сам себя или админа
+        if request.user.pk == pk or block_user.is_superuser:
+            return HttpResponseRedirect(reverse("users:users"))
+
+        block_user.is_active = not block_user.is_active
+        block_user.save()
+        return HttpResponseRedirect(reverse("users:users"))
