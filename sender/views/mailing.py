@@ -23,6 +23,12 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
         kwargs['user'] = self.request.user  # Передаем текущего пользователя в форму
         return kwargs
 
+    # c лайва по курсовой:
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs.update({'request':self.request})
+    #     return kwargs
+
     def form_valid(self, form):
         mailing = form.save()
         user = self.request.user

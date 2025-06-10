@@ -33,6 +33,14 @@ class MessageForm(StyleFormMixin, forms.ModelForm):
 class MailingForm(forms.ModelForm):
     """ Форма для рассылки """
 
+    # c лайва по курсовой:
+    # def __init__(self,*args, **kwargs):
+    #     self.request = kwargs.pop('request')
+    #     user = self.request.user
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['addressees'].queryset = Addressee.objects.filter(owner=user)
+    #     self.fields['message'].queryset = Message.objects.filter(owner=user)
+
     class Meta:
         model = Mailing
         fields = ['message', 'addressees']

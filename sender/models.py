@@ -60,10 +60,26 @@ class Mailing(models.Model):
         (STARTED, 'запущена'),
         (COMPLETED, 'завершена')
     ]
+    # константы на уровне класса
+    DAILY = 'daily'
+    WEEKLY = 'weekly'
+    MONTHLY = 'monthly'
+
+    PERIODICITY_CHOICES = [
+        ('daily', 'раз в день'),
+        ('weekly', 'раз в неделю'),
+        ('monthly', 'раз в месяц')
+    ]
+
     start_at = models.DateTimeField(null=True, blank=True, editable=False,
                                     verbose_name='время запуска')
     completed_at = models.DateTimeField(null=True, blank=True, editable=False,
                                         verbose_name='время завершения')
+    periodicity = models.CharField(max_length=30,
+                                   choices=PERIODICITY_CHOICES,
+                                   verbose_name='периодичность',
+                                   null=True, blank=True)
+
     status = models.CharField(max_length=18,
                               choices=STATUS_CHOICES,
                               verbose_name='статус',
@@ -72,7 +88,7 @@ class Mailing(models.Model):
     message = models.ForeignKey(Message, null=True,
                                 on_delete=models.SET_NULL,
                                 verbose_name='сообщение')
-    addressees = models.ManyToManyField(Addressee, null=True, verbose_name='Адресаты:',
+    addressees = models.ManyToManyField(Addressee, verbose_name='Адресаты:',
                                         )
 
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)

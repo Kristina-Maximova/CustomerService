@@ -38,3 +38,13 @@ class HomeView(TemplateView):
                 context['addressees'] = addressees
         logger.info('Зашел незарегистрированный пользователь')
         return context
+
+# c лайва: подумать про UserPassesTestMixin:
+# from django.contrib.auth.mixins import UserPassesTestMixin
+# from django.views.generic import View
+#
+#
+# class MyView(UserPassesTestMixin, View):
+#     # тут надо определить test_func с проверкой (проверка может быть любая)
+#     def test_func(self):
+#         return self.request.user.email.endswith('@.example.com')
