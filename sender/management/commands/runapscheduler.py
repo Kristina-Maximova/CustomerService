@@ -4,22 +4,28 @@ from django.conf import settings
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
+from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 from django_apscheduler import util
 
 logger = logging.getLogger(__name__)
-
-
-def my_job():
-    # Your job processing logic here...
-    pass
+from sender.models import Mailing
+from config.settings import EMAIL_HOST_USER
 
 
 @util.close_old_connections
-def my_fnc():
-    print("Ola!")
+def my_job():
+
+    mailings = Mailing.objects.filter(status='started')
+    for mailing in mailings:
+        addressees = [addressee.email for addressee in mailing.addressees.all()]
+        send_mail(mailing.message.subject,
+                  mailing.message.text,
+                  from_email=EMAIL_HOST_USER,
+                  recipient_list=addressees,
+                  fail_silently=False)
 
 
 # The `close_old_connections` decorator ensures that database connections, that have become
@@ -46,8 +52,8 @@ class Command(BaseCommand):
         scheduler.add_jobstore(DjangoJobStore(), "default")
 
         scheduler.add_job(
-            my_fnc,
-            trigger=CronTrigger(second="*/10"),  # Every 10 seconds
+            my_job,
+            trigger=CronTrigger(day_of_week="mon"),  #  ("*/24" ) - Every 24 hour
             id="my_job",  # The `id` assigned to each job MUST be unique
             max_instances=1,
             replace_existing=True,
