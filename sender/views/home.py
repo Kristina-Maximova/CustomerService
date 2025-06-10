@@ -10,7 +10,7 @@ from ..models import Addressee, Mailing
 logger = logging.getLogger('my_logger')
 
 
-@method_decorator(cache_page(60 * 1), name='dispatch')
+@method_decorator(cache_page(15), name='dispatch')
 class HomeView(TemplateView):
     """ Представление для главной страницы """
     template_name = 'sender/home.html'

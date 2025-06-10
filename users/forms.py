@@ -20,7 +20,7 @@ class MailUserChangeForm(StyleFormMixin, forms.ModelForm):
 
     class Meta(UserCreationForm.Meta):
         model = MailUser
-        fields = ('email', 'password', 'phone', 'avatar', 'country')
+        fields = ('email', 'phone', 'avatar', 'country')
         success_url = reverse_lazy("users:users")
 
 

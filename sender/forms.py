@@ -40,6 +40,18 @@ class MailingForm(forms.ModelForm):
             'addressees': forms.CheckboxSelectMultiple(),
         }
 
+    def clean_message(self):
+        message = self.cleaned_data.get('message')
+        if not message:
+            raise forms.ValidationError('Сообщение не должно быть пустым.')
+        return message
+
+    def clean_addressees(self):
+        addressees = self.cleaned_data.get('addressees')
+        if not addressees.exists():  # Для ManyToManyField нужно проверять через exists()
+            raise forms.ValidationError('Адресаты не должны быть пустыми.')
+        return addressees
+
     # def __init__(self, *args, **kwargs):
     #     super(MailingForm, self).__init__(*args, **kwargs)
     #     self.fields['message'].widget.attrs.update({'class': 'form-control', 'placeholder': 'сообщение'})

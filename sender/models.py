@@ -6,7 +6,7 @@ from users.models import MailUser
 
 class Addressee(models.Model):
     """ Класс для представления получателя почты """
-    email = models.CharField(max_length=150, unique=True, verbose_name='email')
+    email = models.CharField(max_length=150, unique=False, verbose_name='email')
     full_name = models.CharField(max_length=150, verbose_name='Ф.И.О.')
     comment = models.TextField(null=True, blank=True, verbose_name='комментарий')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -69,10 +69,11 @@ class Mailing(models.Model):
                               verbose_name='статус',
                               default=CREATED,
                               editable=False, )
-    message = models.ForeignKey(Message, null=True, blank=True,
+    message = models.ForeignKey(Message, null=True,
                                 on_delete=models.SET_NULL,
                                 verbose_name='сообщение')
-    addressees = models.ManyToManyField(Addressee, blank=True, verbose_name='Адресаты:')
+    addressees = models.ManyToManyField(Addressee, null=True, verbose_name='Адресаты:',
+                                        )
 
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)

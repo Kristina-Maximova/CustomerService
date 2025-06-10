@@ -72,8 +72,7 @@ class AddresseeListView(LoginRequiredMixin, ListView):
             queryset = cache.get('addressee_queryset')
             if not queryset:
                 queryset = super().get_queryset()
-                cache.set('addressee_queryset', queryset, 60 * 5)
-
+                cache.set('addressee_queryset', queryset, 15)
             return queryset
         else:
             return super().get_queryset().filter(owner=self.request.user)

@@ -56,19 +56,16 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'sender/mailing/mailing_form.html'
     success_url = reverse_lazy('sender:mailings_list')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user  # Передаем текущего пользователя в форму
+        return kwargs
+
     def get_form_class(self):
         user = self.request.user
         if self.object.owner == user:
             return MailingForm
         raise PermissionDenied
-
-    # @staticmethod
-    # def stop_mailshot(request, pk):
-    #     stopped_mailshot = Mailing.objects.get(pk=pk)
-    #
-    #     stopped_mailshot.status = "completed"
-    #     stopped_mailshot.save()
-    #     return redirect(reverse("sender:mailing_list"))
 
 
 class MailingDetailView(LoginRequiredMixin, DetailView):

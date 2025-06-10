@@ -21,6 +21,7 @@ class UserCreateView(CreateView):
     """ Представление для создания нового пользователя"""
     model = MailUser
     form_class = MailUserCreationForm
+    template_name = 'users/user_form.html'
 
     success_url = reverse_lazy("users:email_confirmation")
 
