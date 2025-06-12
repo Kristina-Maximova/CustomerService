@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block page_title %}Sender{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+    {% include 'sender/includes/inc_style.html' %}
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md bg-dark sticky-top border-bottom" data-bs-theme="dark">
+    <div class="container">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="#offcanvas" aria-labelledby="#offcanvasLabel">
+            <div class="offcanvas-body">
+                {% include 'sender/includes/inc_svg.html' %}
+                <ul class="navbar-nav flex-grow-1 justify-content-between">
+                    <li>
+                        <a href="#"
+                           class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" fill="currentColor"
+                                 class="bi pe-none me-2" viewBox="0 0 16 16">
+                                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+                            </svg>
+                            <span class="fs-4">Почтовый сервис</span>
+                        </a>
+                        <hr>
+                        {% include 'sender/includes/main_menu.html' %}
+                        <hr>
+                        {% include 'sender/includes/user_menu.html' %}
+                    </li>
+                    <!-- <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+    <div class="row text-center">
+
+
+        <div class="col-lg-9 px-3 py-3 pt-md-5 pb-md-4 mx-auto ">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+<!-- Подключение Bootstrap JS -->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

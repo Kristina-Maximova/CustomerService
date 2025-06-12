@@ -1,0 +1,67 @@
+{% extends 'sender/base.html' %}
+
+{% block page_title %}Пользователи{% endblock %}
+
+{% block content %}
+<div class="container marketing mt-5">
+
+    <div class="row">
+        <div class="table-responsive small">
+            <h2>Пользователи: </h2>
+            <table class="table table-success table-striped">
+                <thead>
+                <tr>
+                    <th>email</th>
+                    <th>Телефон</th>
+                    <th>Страна</th>
+                    <th>Администратор</th>
+                    <th>Активность</th>
+                    <th>Действия</th>
+
+                </tr>
+                </thead>
+
+                {% for object in object_list %}
+                <tr>
+                    <td>{{ object.email }}</td>
+                    <td>{{ object.phone }}</td>
+                    <td>{{ object.country }}</td>
+                    <td>{{ object.is_superuser|yesno:"Да, Нет"}}</td>
+                    <td>{{object.is_active|yesno:"Активный, Не активный"}}</td>
+
+                    <td>
+
+                        {% if object.is_active %}
+
+                        <form method="post" action="{% url 'users:block_user' object.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Заблокировать</button>
+                        </form>
+                        {% else %}
+
+                        <form method="post" action="{% url 'users:block_user' object.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Разблокировать</button>
+                        </form>
+                        {% endif %}
+
+
+                    </td>
+
+
+                    {% if user.is_superuser %}
+                    <td>
+                        <a class="btn btn-primary btn-sm"
+                           href="{% url 'users:update' object.pk%}">Редактировать</a>
+                        <a class="btn btn-danger btn-sm"
+                           href="{% url 'users:delete' object.pk%}">Удалить</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor%}
+            </table>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

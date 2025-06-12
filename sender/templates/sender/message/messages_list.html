@@ -1,0 +1,29 @@
+{% extends 'sender/base.html' %}
+
+{% block page_title %}Сообщения{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <h1 class="mb-4">Список сообщений</h1>
+    {% if not user.is_superuser and not is_manager %}
+    <a href="{% url 'sender:message_create' %}" class="btn btn-primary">Новое сообщение</a>
+    {% endif %}
+    <ul class="list-group">
+        {% for message in messages %}
+        <li class="list-group-item">
+            <div class="d-grid gap-3">
+                <div class="p-2 bg-light border">ТЕМА: {{ message.subject }}</div>
+            </div>
+            <p>Текст сообщения: {{ message.text | truncatechars:100 }}</p>
+            {% if user.is_superuser or is_manager %}
+
+            {% else %}
+                <a href="{% url 'sender:message_detail' message.pk %}" class="btn btn-secondary">Посмотреть</a>
+                <a href="{% url 'sender:message_update' message.pk %}" class="btn btn-secondary">Изменить</a>
+                <a href="{% url 'sender:message_delete' message.pk %}" class="btn btn-danger">Удалить</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'sender/base.html' %}
+
+{% block page_title %}Получатели{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <h1 class="mb-4">Список получателей</h1>
+    {% if not perms.sender.can_view_all_addressees %}
+    <a href="{% url 'sender:addressee_create' %}" class="btn btn-primary">Добавить адресата</a>
+    {% endif %}
+    <ul class="list-group">
+        {% for addressee in addressees %}
+        <li class="list-group-item">
+            {% if perms.sender.can_view_all_addressees %}
+            <p>{{addressee.email}}</p>
+            {% else %}
+            <a href="{% url 'sender:addressee_detail' addressee.pk %}">{{addressee.email}}</a>
+            <a href="{% url 'sender:addressee_update' addressee.pk %}" class="btn btn-secondary">Изменить</a>
+            <a href="{% url 'sender:addressee_delete' addressee.pk %}" class="btn btn-danger">Удалить</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

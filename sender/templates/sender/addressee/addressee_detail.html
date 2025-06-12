@@ -1,0 +1,26 @@
+{% extends 'sender/base.html' %}
+
+{% block page_title %}Получатель подробно{% endblock %}
+
+{% block content %}
+<div class='container'>
+    <div class="row">
+        <div class="col-5">
+            <div class="card w-45 mt-5 mb-3" style="width: 40rem; background-color: rgba(0,0,0,0.2);">
+                <div class="card-body">
+                    <h3 class="mb-4">Адресат :</h3>
+                    <p>Почта: {{ addressee.email }}</p>
+                    <p>Ф.И.О.: {{ addressee.full_name }}</p>
+                    <p>Комментарий: {{ addressee.comment }}</p>
+                    <p>Создано: {{ addressee.created_at|date:"d.m.Y H:i" }}</p>
+                    <p>Обновлено: {{ addressee.updated_at|date:"d.m.Y H:i" }}</p>
+                    <a href="{% url 'sender:addressees_list' %}" class="btn btn-secondary">Назад к списку</a>
+                    <a href="{% url 'sender:addressee_update' addressee.pk %}" class="btn btn-secondary">Редактировать</a>
+                    <a href="{% url 'sender:addressee_delete' addressee.pk %}" class="btn btn-danger">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

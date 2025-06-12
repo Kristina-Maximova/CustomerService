@@ -1,0 +1,47 @@
+{% extends 'sender/base.html' %}
+
+{% block page_title %}Статистика{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h2 class="mt-3 mb-5">Попытки отправки сообщений</h2>
+
+    <div class="container-fluid class='bg-success-subtle'">
+        <div class="row">
+            <div class="col-9">
+                <table class="table table-success table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Параметр</th>
+                        <th scope="col">Количество</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Всего сделано попыток </td>
+                        <td>{{ attempts_total }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Успешных попыток</td>
+                        <td>{{ ok }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Неуспешных попыток</td>
+                        <td>{{ failure }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>Было отправлено сообщений</td>
+                        <td>{{ mailings_count }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

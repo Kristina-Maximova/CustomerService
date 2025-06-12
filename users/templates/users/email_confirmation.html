@@ -1,0 +1,24 @@
+{% extends 'sender/base.html' %}
+
+{% block page_title %}подтверждение отправки письма на почту{% endblock %}
+
+{% block content %}
+
+<div class="alert alert-info" role="alert">
+    <h4 class="row justify-content-center">Письмо подтверждения отправлено!</h4>
+    <p>
+        Зайдите, пожалуйста, на Вашу эл.почту и нажмите на ссылку подтверждения, чтобы завершить регистрацию.
+    </p>
+
+    <div class="row justify-content-center">
+        <div class="col-5"></div>
+        <div class="col-3">
+            <a class="btn btn-primary mt-1 " href="{% url 'sender:home' %}" role="button">Ok</a>
+        </div>
+        <div class="col-4"></div>
+    </div>
+
+</div>
+
+
+{% endblock %}
