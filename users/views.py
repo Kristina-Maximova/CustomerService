@@ -53,6 +53,7 @@ class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     """ Представление для списка пользователей"""
     model = MailUser
     template_name = "users/user_list.html"
+    ordering = ['email']  # Чтобы не менялся порядок вывода пользователей при смене статуса пользователя
 
     def test_func(self):
         return self.request.user.groups.filter(name="Managers").exists() or self.request.user.is_superuser
